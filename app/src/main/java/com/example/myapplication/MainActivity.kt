@@ -1,19 +1,53 @@
 package com.example.myapplication
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.View
+import android.widget.Button
 import android.widget.TextView
 import androidx.preference.PreferenceManager
+import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.launch
+import java.util.concurrent.Executors
+import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
+
+    val executor = Executors.newSingleThreadExecutor()
+    val handler = Handler(Looper.getMainLooper())
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         anzahlAufrufe()
+    }
+
+    @SuppressLint("SetTextI18n")
+    fun executing(v:View) {
+        val btn = findViewById<Button>(R.id.execute)
+        val intArr = "5, 7, 90, 23, 53"
+        btn.text = "execution in progress"
+        executor.execute {
+            Snackbar.make(v, intArr, Snackbar.LENGTH_SHORT).show()
+            Thread.sleep(7000)
+            handler.post {
+                btn.text = "EXECUTOR STARTEN"
+            }
+        }
+    }
+
+    fun coroutineEx(v:View) {
+        CoroutineScope(IO).launch {
+            Log.i("hilll", "ok")
+        }
     }
 
     fun anzahlAufrufe() {

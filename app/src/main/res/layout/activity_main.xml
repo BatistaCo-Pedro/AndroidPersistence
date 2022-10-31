@@ -66,6 +66,22 @@
                 android:layout_marginTop="15dp"
                 android:text="Dateisystem" />
 
+            <Button
+                android:id="@+id/execute"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="100dp"
+                android:onClick="executing"
+                android:text="EXECUTOR STARTEN" />
+
+            <Button
+                android:id="@+id/coroutine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:onClick="coroutineEx"
+                android:text="COROUTINE STARTEN" />
+
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
