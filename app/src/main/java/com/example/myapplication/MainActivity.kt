@@ -21,6 +21,8 @@ import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
 
+    var isRunning = false
+    var isCoroutineRunning = false
     val executor = Executors.newSingleThreadExecutor()
     val handler = Handler(Looper.getMainLooper())
 
@@ -30,23 +32,38 @@ class MainActivity : AppCompatActivity() {
         anzahlAufrufe()
     }
 
-    @SuppressLint("SetTextI18n")
     fun executing(v:View) {
-        val btn = findViewById<Button>(R.id.execute)
-        val intArr = "5, 7, 90, 23, 53"
-        btn.text = "execution in progress"
-        executor.execute {
-            Snackbar.make(v, intArr, Snackbar.LENGTH_SHORT).show()
-            Thread.sleep(7000)
-            handler.post {
-                btn.text = "EXECUTOR STARTEN"
+        if(isRunning) {
+            Snackbar.make(v, "Is currently running", Snackbar.LENGTH_SHORT).show()
+        }
+        else {
+            isRunning = true
+            val btn = findViewById<Button>(R.id.execute)
+            val intArr = "5, 7, 90, 23, 53"
+            btn.text = "execution in progress"
+            executor.execute {
+                Snackbar.make(v, intArr, Snackbar.LENGTH_SHORT).show()
+                Thread.sleep(7000)
+                handler.post {
+                    btn.text = "EXECUTOR STARTEN"
+                    isRunning = false
+                }
             }
         }
     }
 
     fun coroutineEx(v:View) {
+        val btn = findViewById<Button>(R.id.coroutine)
+        if(isCoroutineRunning) {
+            Snackbar.make(v, "Läuft bereits", Snackbar.LENGTH_SHORT).show()
+            return
+        }
         CoroutineScope(IO).launch {
-            Log.i("hilll", "ok")
+            isCoroutineRunning = true
+            btn.text = "Läuft"
+            Thread.sleep(4000)
+            btn.text = "Coroutine Starten"
+            isCoroutineRunning = false
         }
     }
 
