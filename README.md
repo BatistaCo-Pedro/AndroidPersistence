@@ -1,3 +1,3 @@
 # AndroidPersistence
 
-Impementing Data persistence in Android wiht Kotlin. 
+Implementing Data Persistence in Android wiht Kotlin. 
